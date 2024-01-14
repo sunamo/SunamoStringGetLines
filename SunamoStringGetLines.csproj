@@ -3,7 +3,7 @@
     <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
-    <Version>24.1.7.1</Version>
-	  <Description>Get lines from string</Description>
+    <Version>24.1.11.1</Version>
+    <Description>Get lines from string</Description>
   </PropertyGroup>
 </Project>
