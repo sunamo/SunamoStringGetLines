@@ -1,5 +1,10 @@
-namespace SunamoStringGetLines;
-
+namespace
+#if SunamoExtensions
+SunamoExtensions
+#else
+SunamoStringGetLines
+#endif
+;
 public class SHGetLines
 {
     public static List<string> GetLines(string p)
@@ -11,7 +16,6 @@ public class SHGetLines
         {
             vr.Add(f);
         }
-
         return vr;
     }
 }
