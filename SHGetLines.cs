@@ -1,6 +1,10 @@
 namespace
 #if SunamoExtensions
 SunamoExtensions
+#elif SunamoStringReplace
+SunamoStringReplace
+#elif SunamoStringSplit
+SunamoStringSplit
 #else
 SunamoStringGetLines
 #endif
