@@ -1,3 +1,5 @@
+
+namespace SunamoStringGetLines;
 using System.Diagnostics;
 using System.Text;
 
