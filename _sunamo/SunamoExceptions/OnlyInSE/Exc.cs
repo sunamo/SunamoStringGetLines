@@ -1,5 +1,5 @@
 
-namespace SunamoStringGetLines;
+namespace SunamoStringGetLines._sunamo.SunamoExceptions.OnlyInSE;
 using System.Diagnostics;
 using System.Text;
 

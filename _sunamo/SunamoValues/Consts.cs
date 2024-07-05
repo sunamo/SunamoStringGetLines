@@ -1,4 +1,4 @@
-namespace SunamoStringGetLines;
+namespace SunamoStringGetLines._sunamo.SunamoValues;
 
 
 
