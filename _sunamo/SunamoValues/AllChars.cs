@@ -1,4 +1,3 @@
-
 namespace SunamoStringGetLines._sunamo.SunamoValues;
 internal class AllChars
 {
