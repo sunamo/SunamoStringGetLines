@@ -1,4 +1,5 @@
 namespace SunamoStringGetLines;
+
 public class SHGetLines
 {
     public static List<string> GetLines(string p)
