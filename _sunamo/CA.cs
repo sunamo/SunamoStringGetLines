@@ -1,4 +1,4 @@
-//namespace SunamoStringGetLines._sunamo.SunamoExceptions._AddedToAllCsproj;
+namespace SunamoStringGetLines._sunamo;
 
 internal class CA
 {
