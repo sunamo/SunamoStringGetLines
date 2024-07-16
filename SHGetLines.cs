@@ -9,6 +9,15 @@ public class SHGetLines
         return parts;
     }
 
+    public static List<string> GetLinesFromLinesWithOneRow(List<string> list)
+    {
+        if (list.Count == 1)
+        {
+            return GetLines(list[0]);
+        }
+        return list;
+    }
+
     private static void SplitByUnixNewline(List<string> d)
     {
         SplitBy(d, "\r");
