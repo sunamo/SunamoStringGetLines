@@ -2,8 +2,6 @@ namespace SunamoStringGetLines._sunamo.SunamoExceptions;
 internal partial class ThrowEx
 {
 
-    internal static bool Custom(Exception ex, bool reallyThrow = true)
-    { return Custom(Exceptions.TextOfExceptions(ex), reallyThrow); }
 
     internal static bool Custom(string message, bool reallyThrow = true, string secondMessage = "")
     {
@@ -12,8 +10,6 @@ internal partial class ThrowEx
         return ThrowIsNotNull(str, reallyThrow);
     }
 
-    internal static bool IsNullOrEmpty(string argName, string argValue)
-    { return ThrowIsNotNull(Exceptions.IsNullOrWhitespace(FullNameOfExecutedCode(), argName, argValue, true)); }
 
     #region Other
     internal static string FullNameOfExecutedCode()
