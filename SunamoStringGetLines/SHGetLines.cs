@@ -1,11 +1,21 @@
 namespace SunamoStringGetLines;
 
+using SunamoStringGetLines.SunamoArgs;
+
 public class SHGetLines
 {
-    public static List<string> GetLines(string p)
+    public static List<string> GetLines(string p, GetLinesArgs? a = null)
     {
+        a ??= new GetLinesArgs();
+
         var parts = p.Split(new[] { "\r\n", "\n\r" }, StringSplitOptions.None).ToList();
         SplitByUnixNewline(parts);
+
+        if (a.IsRemovingEmptyOrWhitespaceLines)
+        {
+            parts = parts.Where(o => !string.IsNullOrWhiteSpace(o)).ToList();
+        }
+
         return parts;
     }
 
