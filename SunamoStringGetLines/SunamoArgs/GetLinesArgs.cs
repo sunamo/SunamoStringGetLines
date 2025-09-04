@@ -1,4 +1,7 @@
 ﻿namespace SunamoStringGetLines.SunamoArgs;
+/// <summary>
+/// 
+/// </summary>
 public class GetLinesArgs
 {
     /// <summary>
