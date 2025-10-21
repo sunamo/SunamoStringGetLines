@@ -1,4 +1,7 @@
-﻿namespace SunamoStringGetLines.Tests;
+// EN: Variable names have been checked and replaced with self-descriptive names
+// CZ: Názvy proměnných byly zkontrolovány a nahrazeny samopopisnými názvy
+
+namespace SunamoStringGetLines.Tests;
 
 public class SHGetLinesTests
 {
@@ -13,8 +16,8 @@ public class SHGetLinesTests
     {
         var path = @"D:\_Test\PlatformIndependentNuGetPackages\SunamoFileIO\AllNN.cs";
         var o = await File.ReadAllTextAsync(path);
-        var l = SHGetLines.GetLines(o);
-        //var l = await TF.ReadAllLines(path);
+        var list = SHGetLines.GetLines(o);
+        //var list = await TF.ReadAllLines(path);
     }
 
     [Fact]
@@ -24,8 +27,8 @@ public class SHGetLinesTests
         var path = bp + "AllRnRn.cs";
         // TF.ReadAllLines vrací 26 řádků, ReadAllLinesAsync 29
         var o = await File.ReadAllTextAsync(path);
-        var l = SHGetLines.GetLines(o);
-        //var l = await TF.ReadAllLines(path);
+        var list = SHGetLines.GetLines(o);
+        //var list = await TF.ReadAllLines(path);
     }
 
     [Fact]
@@ -34,8 +37,8 @@ public class SHGetLinesTests
         var path = @"E:\vs\Projects\PlatformIndependentNuGetPackages\SunamoLang\SunamoI18N\AppLangHelper.cs";
         // TF.ReadAllLines vrací 26 řádků, ReadAllLinesAsync 29
         var o = await File.ReadAllTextAsync(path);
-        var l = SHGetLines.GetLines(o);
-        //var l = await TF.ReadAllLines(path);
+        var list = SHGetLines.GetLines(o);
+        //var list = await TF.ReadAllLines(path);
     }
 
     [Fact]
@@ -45,7 +48,7 @@ public class SHGetLinesTests
         //var input1 = string.Format(input, "\r\n");
         var input2 = string.Format(input, "");
 
-        //var r = SHGetLines.GetLines(input1);
+        //var result = SHGetLines.GetLines(input1);
         var r2 = SHGetLines.GetLines(input2);
 
     }
