@@ -60,6 +60,6 @@ public class SHGetLines
 
         d.RemoveAt(i);
 
-        foreach (var item in r) d.Insert(i, item);
+        foreach (var line in r) d.Insert(i, line);
     }
 }
