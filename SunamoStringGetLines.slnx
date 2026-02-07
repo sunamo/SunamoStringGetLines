@@ -1,0 +1,5 @@
+<Solution>
+  <Project Path="SunamoStringGetLines.Tests\\SunamoStringGetLines.Tests.csproj" />
+  <Project Path="RunnerStringGetLines\\RunnerStringGetLines.csproj" />
+  <Project Path="SunamoStringGetLines\SunamoStringGetLines.csproj" />
+</Solution>
