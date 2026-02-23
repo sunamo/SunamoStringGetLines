@@ -2,8 +2,17 @@ namespace SunamoStringGetLines;
 
 using SunamoStringGetLines.SunamoArgs;
 
+/// <summary>
+/// Provides helper methods for splitting strings into lines with various options.
+/// </summary>
 public class SHGetLines
 {
+    /// <summary>
+    /// Splits a string into individual lines, handling different newline formats.
+    /// </summary>
+    /// <param name="p">The text to split into lines.</param>
+    /// <param name="a">Optional arguments controlling line processing behavior.</param>
+    /// <returns>A list of individual lines.</returns>
     public static List<string> GetLines(string p, GetLinesArgs? a = null)
     {
         a ??= new GetLinesArgs();
@@ -19,6 +28,11 @@ public class SHGetLines
         return parts;
     }
 
+    /// <summary>
+    /// If the list contains exactly one element, splits that element into lines. Otherwise returns the list as-is.
+    /// </summary>
+    /// <param name="list">The list of strings to process.</param>
+    /// <returns>A list of individual lines.</returns>
     public static List<string> GetLinesFromLinesWithOneRow(List<string> list)
     {
         if (list.Count == 1) return GetLines(list[0]);
