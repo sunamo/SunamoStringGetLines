@@ -1,55 +1,69 @@
-// EN: Variable names have been checked and replaced with self-descriptive names
-// CZ: Názvy proměnných byly zkontrolovány a nahrazeny samopopisnými názvy
+// Variable names have been checked and replaced with self-descriptive names
 
 namespace SunamoStringGetLines.Tests;
 
+/// <summary>
+/// Tests for <see cref="SHGetLines"/> class.
+/// </summary>
 public class SHGetLinesTests
 {
+    /// <summary>
+    /// Tests that GetLines correctly splits text containing only Unix newlines.
+    /// </summary>
+    [Fact]
+    public void ReadAllLinesTest_AllN()
+    {
+        var text = "line1\nline2\nline3\nline4";
+        var list = SHGetLines.GetLines(text);
+        Assert.Equal(4, list.Count);
+        Assert.Equal("line1", list[0]);
+        Assert.Equal("line2", list[1]);
+        Assert.Equal("line3", list[2]);
+        Assert.Equal("line4", list[3]);
+    }
 
     /// <summary>
-    /// Vytvořeno zda správně čte různé newline
-    /// Zjištěno že ano, jak File tak TF
+    /// Tests that GetLines correctly splits text containing only Windows newlines.
     /// </summary>
-    /// <returns></returns>
     [Fact]
-    public async Task ReadAllLinesTest_AllN()
+    public void ReadAllLinesTest_AllRn()
     {
-        var path = @"D:\_Test\PlatformIndependentNuGetPackages\SunamoFileIO\AllNN.cs";
-        var o = await File.ReadAllTextAsync(path);
-        var list = SHGetLines.GetLines(o);
-        //var list = await TF.ReadAllLines(path);
+        var text = "line1\r\nline2\r\nline3\r\nline4";
+        var list = SHGetLines.GetLines(text);
+        Assert.Equal(4, list.Count);
+        Assert.Equal("line1", list[0]);
+        Assert.Equal("line2", list[1]);
+        Assert.Equal("line3", list[2]);
+        Assert.Equal("line4", list[3]);
     }
 
+    /// <summary>
+    /// Tests that GetLines correctly handles text with mixed newline styles.
+    /// </summary>
     [Fact]
-    public async Task ReadAllLinesTest_AllRn()
+    public void ReadAllLinesTest_MixedNewlines()
     {
-        var bp = @"D:\_Test\PlatformIndependentNuGetPackages\SunamoFileIO\";
-        var path = bp + "AllRnRn.cs";
-        // TF.ReadAllLines vrací 26 řádků, ReadAllLinesAsync 29
-        var o = await File.ReadAllTextAsync(path);
-        var list = SHGetLines.GetLines(o);
-        //var list = await TF.ReadAllLines(path);
+        var text = "line1\r\nline2\nline3\rline4";
+        var list = SHGetLines.GetLines(text);
+        Assert.Equal(4, list.Count);
+        Assert.Equal("line1", list[0]);
+        Assert.Equal("line2", list[1]);
+        Assert.Equal("line3", list[2]);
+        Assert.Equal("line4", list[3]);
     }
 
+    /// <summary>
+    /// Tests that GetLines correctly handles various newline delimiters in a single string.
+    /// </summary>
     [Fact]
-    public async Task ReadAllLinesTest_ProblematicFiles()
+    public void GetLinesTest_VariousNewLinesDelimiter()
     {
-        var path = @"E:\vs\Projects\PlatformIndependentNuGetPackages\SunamoLang\SunamoI18N\AppLangHelper.cs";
-        // TF.ReadAllLines vrací 26 řádků, ReadAllLinesAsync 29
-        var o = await File.ReadAllTextAsync(path);
-        var list = SHGetLines.GetLines(o);
-        //var list = await TF.ReadAllLines(path);
-    }
-
-    [Fact]
-    public async Task GetLinesTest_VariousNewLinesDelimiter()
-    {
-        var input = "a\nc{0}\rd\r\ne";
-        //var input1 = string.Format(input, "\r\n");
-        var input2 = string.Format(input, "");
-
-        //var result = SHGetLines.GetLines(input1);
-        var r2 = SHGetLines.GetLines(input2);
-
+        var text = "a\nc\rd\r\ne";
+        var result = SHGetLines.GetLines(text);
+        Assert.Equal(4, result.Count);
+        Assert.Equal("a", result[0]);
+        Assert.Equal("c", result[1]);
+        Assert.Equal("d", result[2]);
+        Assert.Equal("e", result[3]);
     }
 }

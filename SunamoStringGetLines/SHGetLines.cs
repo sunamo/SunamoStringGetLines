@@ -1,7 +1,5 @@
 namespace SunamoStringGetLines;
 
-using SunamoStringGetLines.SunamoArgs;
-
 /// <summary>
 /// Provides helper methods for splitting strings into lines with various options.
 /// </summary>
@@ -10,22 +8,22 @@ public class SHGetLines
     /// <summary>
     /// Splits a string into individual lines, handling different newline formats.
     /// </summary>
-    /// <param name="p">The text to split into lines.</param>
-    /// <param name="a">Optional arguments controlling line processing behavior.</param>
+    /// <param name="text">The text to split into lines.</param>
+    /// <param name="args">Optional arguments controlling line processing behavior.</param>
     /// <returns>A list of individual lines.</returns>
-    public static List<string> GetLines(string p, GetLinesArgs? a = null)
+    public static List<string> GetLines(string text, GetLinesArgs? args = null)
     {
-        a ??= new GetLinesArgs();
+        args ??= new GetLinesArgs();
 
-        var parts = p.Split(new[] { "\r\n", "\n\r" }, StringSplitOptions.None).ToList();
-        SplitByUnixNewline(parts);
+        var lines = text.Split(new[] { "\r\n", "\n\r" }, StringSplitOptions.None).ToList();
+        SplitByUnixNewline(lines);
 
-        if (a.IsRemovingEmptyOrWhitespaceLines)
+        if (args.IsRemovingEmptyOrWhitespaceLines)
         {
-            parts = parts.Where(o => !string.IsNullOrWhiteSpace(o)).ToList();
+            lines = lines.Where(line => !string.IsNullOrWhiteSpace(line)).ToList();
         }
 
-        return parts;
+        return lines;
     }
 
     /// <summary>
@@ -39,38 +37,53 @@ public class SHGetLines
         return list;
     }
 
-    private static void SplitByUnixNewline(List<string> d)
+    /// <summary>
+    /// Splits list elements that contain Unix-style newline characters into separate elements.
+    /// </summary>
+    /// <param name="list">The list of strings to process.</param>
+    private static void SplitByUnixNewline(List<string> list)
     {
-        SplitBy(d, "\r");
-        SplitBy(d, "\n");
+        SplitBy(list, "\r");
+        SplitBy(list, "\n");
     }
 
-    private static void SplitBy(List<string> d, string v)
+    /// <summary>
+    /// Splits list elements that contain the specified delimiter into separate elements.
+    /// </summary>
+    /// <param name="list">The list of strings to split.</param>
+    /// <param name="delimiter">The delimiter string to split by.</param>
+    private static void SplitBy(List<string> list, string delimiter)
     {
-        for (var i = d.Count - 1; i >= 0; i--)
+        for (var i = list.Count - 1; i >= 0; i--)
         {
-            if (v == "\r")
+            if (delimiter == "\r")
             {
-                var rn = d[i].Split(new[] { "\r\n" }, StringSplitOptions.None);
-                var nr = d[i].Split(new[] { "\n\r" }, StringSplitOptions.None);
+                var carriageReturnNewlineParts = list[i].Split(new[] { "\r\n" }, StringSplitOptions.None);
+                var newlineCarriageReturnParts = list[i].Split(new[] { "\n\r" }, StringSplitOptions.None);
 
-                if (rn.Length > 1)
-                    ThrowEx.Custom("cannot contain any \r\name, pass already split by this pattern");
-                else if (nr.Length > 1) ThrowEx.Custom("cannot contain any \n\r, pass already split by this pattern");
+                if (carriageReturnNewlineParts.Length > 1)
+                    ThrowEx.Custom("cannot contain any \\r\\n, pass already split by this pattern");
+                else if (newlineCarriageReturnParts.Length > 1) ThrowEx.Custom("cannot contain any \\n\\r, pass already split by this pattern");
             }
 
-            var name = d[i].Split(new[] { v }, StringSplitOptions.None);
+            var segments = list[i].Split(new[] { delimiter }, StringSplitOptions.None);
 
-            if (name.Length > 1) InsertOnIndex(d, name.ToList(), i);
+            if (segments.Length > 1) InsertOnIndex(list, segments.ToList(), i);
         }
     }
 
-    private static void InsertOnIndex(List<string> d, List<string> r, int i)
+    /// <summary>
+    /// Removes the element at the specified index and inserts the replacement list at the same position.
+    /// </summary>
+    /// <param name="list">The list to modify.</param>
+    /// <param name="insertList">The list of elements to insert.</param>
+    /// <param name="index">The index at which to perform the replacement.</param>
+    private static void InsertOnIndex(List<string> list, List<string> insertList, int index)
     {
-        r.Reverse();
+        insertList.Reverse();
 
-        d.RemoveAt(i);
+        list.RemoveAt(index);
 
-        foreach (var line in r) d.Insert(i, line);
+        foreach (var item in insertList) list.Insert(index, item);
     }
 }

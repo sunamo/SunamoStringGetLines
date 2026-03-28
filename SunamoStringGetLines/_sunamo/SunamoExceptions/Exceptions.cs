@@ -1,35 +1,45 @@
 namespace SunamoStringGetLines._sunamo.SunamoExceptions;
 
 // © www.sunamo.cz. All Rights Reserved.
+
+/// <summary>
+/// Provides utility methods for exception handling and stack trace analysis.
+/// </summary>
 internal sealed partial class Exceptions
 {
-    #region Other
-    internal static string CheckBefore(string before)
+    /// <summary>
+    /// Prepends a prefix to a message if the prefix is not empty.
+    /// </summary>
+    /// <param name="prefix">The prefix to prepend.</param>
+    /// <returns>The formatted prefix string, or empty if the prefix is null or whitespace.</returns>
+    internal static string CheckBefore(string prefix)
     {
-        return string.IsNullOrWhiteSpace(before) ? string.Empty : before + ": ";
+        return string.IsNullOrWhiteSpace(prefix) ? string.Empty : prefix + ": ";
     }
 
-
-    internal static Tuple<string, string, string> PlaceOfException(
-bool fillAlsoFirstTwo = true)
+    /// <summary>
+    /// Retrieves the place of exception from the current stack trace.
+    /// </summary>
+    /// <param name="isFillingTypeAndMethod">Whether to extract type and method name from the first non-ThrowEx frame.</param>
+    /// <returns>A tuple containing the type name, method name, and full stack trace text.</returns>
+    internal static Tuple<string, string, string> PlaceOfException(bool isFillingTypeAndMethod = true)
     {
-        StackTrace st = new();
-        var value = st.ToString();
-        var lines = value.Split(new string[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries).ToList();
+        StackTrace stackTrace = new();
+        var stackTraceText = stackTrace.ToString();
+        var lines = stackTraceText.Split(new string[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries).ToList();
         lines.RemoveAt(0);
-        var i = 0;
         string type = string.Empty;
         string methodName = string.Empty;
-        for (; i < lines.Count; i++)
+        for (var i = 0; i < lines.Count; i++)
         {
-            var item = lines[i];
-            if (fillAlsoFirstTwo)
-                if (!item.StartsWith("   at ThrowEx"))
+            var line = lines[i];
+            if (isFillingTypeAndMethod)
+                if (!line.StartsWith("   at ThrowEx"))
                 {
-                    TypeAndMethodName(item, out type, out methodName);
-                    fillAlsoFirstTwo = false;
+                    TypeAndMethodName(line, out type, out methodName);
+                    isFillingTypeAndMethod = false;
                 }
-            if (item.StartsWith("at System."))
+            if (line.StartsWith("at System."))
             {
                 lines.Add(string.Empty);
                 lines.Add(string.Empty);
@@ -38,19 +48,32 @@ bool fillAlsoFirstTwo = true)
         }
         return new Tuple<string, string, string>(type, methodName, string.Join(Environment.NewLine, lines));
     }
-    internal static void TypeAndMethodName(string lines, out string type, out string methodName)
+
+    /// <summary>
+    /// Extracts the type and method name from a stack trace line.
+    /// </summary>
+    /// <param name="stackTraceLine">A single stack trace line to parse.</param>
+    /// <param name="type">The extracted type name.</param>
+    /// <param name="methodName">The extracted method name.</param>
+    internal static void TypeAndMethodName(string stackTraceLine, out string type, out string methodName)
     {
-        var s2 = lines.Split("at ")[1].Trim();
-        var text = s2.Split("(")[0];
-        var parameter = text.Split(new char[] { '.' }, StringSplitOptions.RemoveEmptyEntries).ToList();
-        methodName = parameter[^1];
-        parameter.RemoveAt(parameter.Count - 1);
-        type = string.Join(".", parameter);
+        var qualifiedSignature = stackTraceLine.Split("at ")[1].Trim();
+        var methodPath = qualifiedSignature.Split('(')[0];
+        var pathSegments = methodPath.Split(new char[] { '.' }, StringSplitOptions.RemoveEmptyEntries).ToList();
+        methodName = pathSegments[^1];
+        pathSegments.RemoveAt(pathSegments.Count - 1);
+        type = string.Join(".", pathSegments);
     }
-    internal static string CallingMethod(int value = 1)
+
+    /// <summary>
+    /// Returns the name of the calling method at the specified stack frame depth.
+    /// </summary>
+    /// <param name="depth">The stack frame depth to look at.</param>
+    /// <returns>The name of the calling method.</returns>
+    internal static string CallingMethod(int depth = 1)
     {
         StackTrace stackTrace = new();
-        var methodBase = stackTrace.GetFrame(value)?.GetMethod();
+        var methodBase = stackTrace.GetFrame(depth)?.GetMethod();
         if (methodBase == null)
         {
             return "Method name cannot be get";
@@ -58,17 +81,15 @@ bool fillAlsoFirstTwo = true)
         var methodName = methodBase.Name;
         return methodName;
     }
-    #endregion
 
-    #region IsNullOrWhitespace
-    readonly static StringBuilder sbAdditionalInfoInner = new();
-    readonly static StringBuilder sbAdditionalInfo = new();
-    #endregion
-
-    #region OnlyReturnString 
-    internal static string? Custom(string before, string message)
+    /// <summary>
+    /// Creates a custom exception message with an optional prefix.
+    /// </summary>
+    /// <param name="prefix">The prefix for the message.</param>
+    /// <param name="message">The exception message.</param>
+    /// <returns>The formatted exception message.</returns>
+    internal static string? Custom(string prefix, string message)
     {
-        return CheckBefore(before) + message;
+        return CheckBefore(prefix) + message;
     }
-    #endregion
 }
