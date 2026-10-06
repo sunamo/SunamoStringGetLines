@@ -1,5 +1,10 @@
 # SunamoStringGetLines
 
+## Short description
+
+Knihovna pro získávání řádků z řetězce (třída SHGetLines, GetLinesArgs). Umí rozdělit text na řádky a zpracovat řádky obsahující jednořádkové záznamy. Součást sbírky pinp, obsahuje testy a Runner.
+
+
 Get lines from string
 
 ## Overview
