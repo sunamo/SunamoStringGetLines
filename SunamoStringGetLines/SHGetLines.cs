@@ -1,7 +1,16 @@
 namespace SunamoStringGetLines;
 
+/// <summary>
+/// Represents the SH get lines type.
+/// </summary>
 public class SHGetLines
 {
+    /// <summary>
+    /// Get lines.
+    /// </summary>
+    /// <param name="text">The text.</param>
+    /// <param name="args">The args.</param>
+    /// <returns>The get lines result.</returns>
     public static List<string> GetLines(string text, GetLinesArgs? args = null)
     {
         args ??= new GetLinesArgs();
@@ -17,6 +26,11 @@ public class SHGetLines
         return lines;
     }
 
+    /// <summary>
+    /// Get lines from lines with one row.
+    /// </summary>
+    /// <param name="list">The list.</param>
+    /// <returns>The get lines from lines with one row result.</returns>
     public static List<string> GetLinesFromLinesWithOneRow(List<string> list)
     {
         if (list.Count == 1) return GetLines(list[0]);
